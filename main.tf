@@ -3,5 +3,6 @@ locals {
 }
 
 module "servers" {
+  source            = "./server"
   environment       = var.environment
 }
