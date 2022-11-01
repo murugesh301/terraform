@@ -5,5 +5,5 @@ locals {
 module "servers" {
   source            = "./server"
   environment       = var.environment
-  availability_zone = local.production_availability_zon
+  availability_zone = local.production_availability_zone
 }
