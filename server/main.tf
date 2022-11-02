@@ -17,31 +17,25 @@ resource "aws_ecs_task_definition" "first_service" {
   memory                   = "1024"
   cpu                      = "512"
   execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
-  container_definitions = <<DEFINITION
-  [
-   {
-      name      = "first"
-      image     = "${434828451347.dkr.ecr.ap-south-1.amazonaws.com/my-ecr-repo}",
-      cpu       = 256
-      memory    = 512
-      essential = true
-      portMappings = [
-        {
-          containerPort = 80
-          hostPort      = 80
-        }
-      ]
-    }
-  ]
-DEFINITION
+    container_definitions    = << EOF
+[
+  {
+    "name": "demo-container",
+    "image": "434828451347.dkr.ecr.ap-south-1.amazonaws.com/my-ecr-repo:1.0",
+    "memory": 1024,
+    "cpu": 512,
+    "essential": true,
+    "entryPoint": ["/"],
+    "portMappings": [
+      {
+        "containerPort": 80,
+        "hostPort": 80
+      }
+    ]
+  }
+]
+EOF
 }
-#requires_compatibilities = ["FARGATE",]  # Stating that we are using ECS Fargate
-#  network_mode             = "awsvpc"    # Using awsvpc as our network mode as this is required for Fargate
- # memory                   = 512         # Specifying the memory our container requires
-  #cpu                      = 256         # Specifying the CPU our container requires
-  #execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
-#}
-
 resource "aws_iam_role" "ecsTaskExecutionRole" {
   name               = "ecsTaskExecutionRole"
   assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
