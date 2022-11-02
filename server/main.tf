@@ -12,7 +12,7 @@ resource "aws_ecs_cluster" "my_cluster" {
 
 resource "aws_ecs_task_definition" "first_service" {
   family = "first_service"
-  container_definitions = << definition([
+  container_definitions = <<DEFINITION([
     {
       name      = "first"
       image     = "${434828451347.dkr.ecr.ap-south-1.amazonaws.com/my-ecr-repo}",
