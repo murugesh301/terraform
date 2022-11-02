@@ -17,7 +17,7 @@ resource "aws_ecs_task_definition" "first_service" {
   memory                   = "1024"
   cpu                      = "512"
   execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
-    container_definitions    = << EOF
+    container_definitions    = <<EOF
 [
   {
     "name": "demo-container",
