@@ -12,8 +12,14 @@ resource "aws_ecs_cluster" "my_cluster" {
 
 resource "aws_ecs_task_definition" "first_service" {
   family = "first_service"
-  container_definitions = <<DEFINITION([
-    {
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  memory                   = "1024"
+  cpu                      = "512"
+  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
+  container_definitions = <<DEFINITION
+  [
+   {
       name      = "first"
       image     = "${434828451347.dkr.ecr.ap-south-1.amazonaws.com/my-ecr-repo}",
       cpu       = 256
@@ -25,14 +31,16 @@ resource "aws_ecs_task_definition" "first_service" {
           hostPort      = 80
         }
       ]
-    },
+    }
+  ]
 DEFINITION
-requires_compatibilities = ["FARGATE",]  # Stating that we are using ECS Fargate
-  network_mode             = "awsvpc"    # Using awsvpc as our network mode as this is required for Fargate
-  memory                   = 512         # Specifying the memory our container requires
-  cpu                      = 256         # Specifying the CPU our container requires
-  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
 }
+#requires_compatibilities = ["FARGATE",]  # Stating that we are using ECS Fargate
+#  network_mode             = "awsvpc"    # Using awsvpc as our network mode as this is required for Fargate
+ # memory                   = 512         # Specifying the memory our container requires
+  #cpu                      = 256         # Specifying the CPU our container requires
+  #execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
+#}
 
 resource "aws_iam_role" "ecsTaskExecutionRole" {
   name               = "ecsTaskExecutionRole"
