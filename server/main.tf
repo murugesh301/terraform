@@ -63,6 +63,11 @@ resource "aws_ecs_service" "first_service" {
   task_definition = "${aws_ecs_task_definition.first_service.arn}" # Referencing the task our service will spin up
   launch_type     = "FARGATE"
   desired_count   = 3 # Setting the number of containers we want deployed to 3
+
+  network_configuration {
+    subnets          = ["${aws_default_subnet.default_subnet_a.id}", "${aws_default_subnet.default_subnet_b.id}", "${aws_default_subnet.default_subnet_c.id}"]
+    assign_public_ip = true # Providing our containers with public IPs
+  }
 }
 
 # Providing a reference to our default VPC
