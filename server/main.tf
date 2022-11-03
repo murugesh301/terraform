@@ -57,8 +57,8 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-resource "aws_ecs_service" "my_first_service" {
-  name            = "my_first-service"                             # Naming our first service
+resource "aws_ecs_service" "first_service" {
+  name            = "first-service"                             # Naming our first service
   cluster         = "${aws_ecs_cluster.my_cluster.id}"             # Referencing our created Cluster
   task_definition = "${aws_ecs_task_definition.first_service.arn}" # Referencing the task our service will spin up
   launch_type     = "FARGATE"
